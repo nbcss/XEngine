@@ -1,0 +1,54 @@
+package io.github.nbcss.xengine.api.block;
+
+import io.github.nbcss.xengine.core.block.BlockMaterial;
+import net.minecraft.world.level.material.Material;
+
+public interface XBlockMaterial {
+    XBlockMaterial AIR = new BlockMaterial(Material.a);
+    XBlockMaterial STRUCTURE_VOID = new BlockMaterial(Material.b);
+    XBlockMaterial PORTAL = new BlockMaterial(Material.c);
+    XBlockMaterial CARPET = new BlockMaterial(Material.d);
+    XBlockMaterial PLANT = new BlockMaterial(Material.e);
+    XBlockMaterial UNDERWATER_PLANT = new BlockMaterial(Material.f);
+    XBlockMaterial REPLACEABLE_PLANT = new BlockMaterial(Material.g);
+    XBlockMaterial NETHER_SHOOTS = new BlockMaterial(Material.h);
+    XBlockMaterial REPLACEABLE_UNDERWATER_PLANT = new BlockMaterial(Material.i);
+    XBlockMaterial WATER = new BlockMaterial(Material.j);
+    XBlockMaterial BUBBLE_COLUMN = new BlockMaterial(Material.k);
+    XBlockMaterial LAVA = new BlockMaterial(Material.l);
+    XBlockMaterial SNOW_LAYER = new BlockMaterial(Material.m);
+    XBlockMaterial FIRE = new BlockMaterial(Material.n);
+    XBlockMaterial DECORATION = new BlockMaterial(Material.o);
+    XBlockMaterial COBWEB = new BlockMaterial(Material.p);
+    XBlockMaterial SCULK = new BlockMaterial(Material.q);
+    XBlockMaterial REDSTONE_LAMP = new BlockMaterial(Material.r);
+    XBlockMaterial ORGANIC_PRODUCT = new BlockMaterial(Material.s);
+    XBlockMaterial SOIL = new BlockMaterial(Material.t);
+    XBlockMaterial SOLID_ORGANIC = new BlockMaterial(Material.u);
+    XBlockMaterial DENSE_ICE = new BlockMaterial(Material.v);
+    XBlockMaterial AGGREGATE = new BlockMaterial(Material.w);
+    XBlockMaterial SPONGE = new BlockMaterial(Material.x);
+    XBlockMaterial SHULKER_BOX = new BlockMaterial(Material.y);
+    XBlockMaterial WOOD = new BlockMaterial(Material.z);
+    XBlockMaterial NETHER_WOOD = new BlockMaterial(Material.A);
+    XBlockMaterial BAMBOO_SAPLING = new BlockMaterial(Material.B);
+    XBlockMaterial BAMBOO = new BlockMaterial(Material.C);
+    XBlockMaterial WOOL = new BlockMaterial(Material.D);
+    XBlockMaterial TNT = new BlockMaterial(Material.E);
+    XBlockMaterial LEAVES = new BlockMaterial(Material.F);
+    XBlockMaterial GLASS = new BlockMaterial(Material.G);
+    XBlockMaterial ICE = new BlockMaterial(Material.H);
+    XBlockMaterial CACTUS = new BlockMaterial(Material.I);
+    XBlockMaterial STONE = new BlockMaterial(Material.J);
+    XBlockMaterial METAL = new BlockMaterial(Material.K);
+    XBlockMaterial SNOW_BLOCK = new BlockMaterial(Material.L);
+    XBlockMaterial REPAIR_STATION = new BlockMaterial(Material.M);
+    XBlockMaterial BARRIER = new BlockMaterial(Material.N);
+    XBlockMaterial PISTON = new BlockMaterial(Material.O);
+    XBlockMaterial MOSS_BLOCK = new BlockMaterial(Material.P);
+    XBlockMaterial GOURD = new BlockMaterial(Material.Q);
+    XBlockMaterial EGG = new BlockMaterial(Material.R);
+    XBlockMaterial CAKE = new BlockMaterial(Material.S);
+    XBlockMaterial AMETHYST = new BlockMaterial(Material.T);
+    XBlockMaterial POWDER_SNOW = new BlockMaterial(Material.U);
+}

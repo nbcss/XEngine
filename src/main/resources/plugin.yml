@@ -1,0 +1,5 @@
+name: XEngine
+version: '${project.version}'
+main: io.github.nbcss.xengine.XEngine
+api-version: 1.17
+authors: [ nbcss ]
