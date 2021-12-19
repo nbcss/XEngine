@@ -73,7 +73,7 @@
             <artifactId>spigot-api</artifactId>
             <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/patched_1.17.1.jar</systemPath>
+            <systemPath>${project.basedir}/libs/spigot-1.17.1.jar</systemPath>
         </dependency>
         <!--<dependency>
             <groupId>org.ow2.asm</groupId>
