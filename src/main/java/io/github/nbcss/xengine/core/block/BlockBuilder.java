@@ -29,32 +29,36 @@ public class BlockBuilder implements XBlock.Builder {
         this.key = new MinecraftKey(namespace, id);
     }
 
+    @Override
     public XBlock.Builder handler(XBlockClass type){
         this.handler = type;
         return this;
     }
 
+    @Override
     public XBlock.Builder type(Material material){
         this.type = material;
         return this;
     }
 
+    @Override
     public XBlock.Builder info(XBlockSettings settings){
         this.settings = settings;
         return this;
     }
 
+    @Override
     public XBlock register(){
         assert settings != null && handler != null;
         ResourceKey<Block> resourceKey = ResourceKey.a(IRegistry.W.f(), key);
         Block old = IRegistry.W.a(resourceKey);
         if(old != null){
-            return new BlockContainer(old);
+            return BlockContainer.of(old);
         }
         Block block = ((BlockClass) handler).create((BlockSettings) settings);
         init(block, type);
         Bukkit.getLogger().info("Added Block [" + key + "]");
-        return new BlockContainer(IRegistry.a(IRegistry.W, key, block));
+        return BlockContainer.of(IRegistry.a(IRegistry.W, key, block));
     }
 
     public static void init(Block block, Material type){

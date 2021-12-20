@@ -33,7 +33,7 @@ public class Reflection {
 
     public static <T> Constructor<T> constructor(Class<T> target, Class<?>... args){
         try{
-            Constructor<T> constructor = target.getConstructor(args);
+            Constructor<T> constructor = target.getDeclaredConstructor(args);
             constructor.setAccessible(true);
             return constructor;
         }catch (Exception e){
@@ -78,6 +78,13 @@ public class Reflection {
         return field(bukkitClass(packageName, className), fieldName);
     }
 
+    @SuppressWarnings("unchecked")
+    public static <T> Constructor<T> bukkitConstructor(String packageName,
+                                                       String className,
+                                                       Class<?>... args){
+        return (Constructor<T>) constructor(bukkitClass(packageName, className), args);
+    }
+
     public static Object get(Field field, Object target){
         try{
             return field.get(target);
@@ -89,6 +96,14 @@ public class Reflection {
     public static Object invoke(Method method, Object target, Object... args){
         try{
             return method.invoke(target, args);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T newInstance(Constructor<T> constructor, Object... args){
+        try{
+            return constructor.newInstance(args);
         }catch (Exception e){
             throw new RuntimeException(e);
         }

@@ -86,11 +86,11 @@ public class BlockEntityTypeBuilder<T extends TileEntity, U extends XBlockEntity
         ResourceKey<TileEntityTypes<?>> resourceKey = ResourceKey.a(IRegistry.ac.f(), key);
         TileEntityTypes<T> old = (TileEntityTypes<T>) IRegistry.ac.a(resourceKey);
         if(old != null){
-            return new BlockEntityTypeContainer<>(old);
+            return BlockEntityTypeContainer.of(old);
         }
         TileEntityTypes<?> types = build();
         TileEntityTypes<T> current = (TileEntityTypes<T>) IRegistry.a(IRegistry.ac, key, types);
-        return new BlockEntityTypeContainer<>(current);
+        return BlockEntityTypeContainer.of(current);
     }
 
     private static class Proxy<T extends TileEntity, U extends XBlockEntity<T>> implements InvocationHandler {

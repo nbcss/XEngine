@@ -33,7 +33,6 @@ public abstract class XItemStack extends org.bukkit.inventory.ItemStack {
     @Override
     public void setType(Material type) {
         //no effect for setType()
-
     }
 
     public XItemMaterial getMaterial(){

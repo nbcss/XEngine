@@ -14,7 +14,7 @@ public class BlockContainer implements XBlock {
             "setTypeAndData", IBlockData.class, boolean.class);
     private final Block block;
     private final MinecraftKey key;
-    public BlockContainer(Block block){
+    private BlockContainer(Block block){
         this.block = block;
         this.key = IRegistry.W.getKey(block);
     }
@@ -42,5 +42,9 @@ public class BlockContainer implements XBlock {
     @Override
     public String getId() {
         return key.getKey();
+    }
+
+    public static BlockContainer of(Block block){
+        return new BlockContainer(block);
     }
 }
