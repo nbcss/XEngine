@@ -1,5 +1,6 @@
 package io.github.nbcss.xengine.core.block;
 
+import io.github.nbcss.xengine.api.XMaterial;
 import io.github.nbcss.xengine.api.block.XBlock;
 import io.github.nbcss.xengine.api.block.XBlockClass;
 import io.github.nbcss.xengine.api.block.XBlockSettings;
@@ -24,7 +25,7 @@ public class BlockBuilder implements XBlock.Builder {
     private final MinecraftKey key;
     private XBlockClass handler = BaseBlockClass.INSTANCE;
     private XBlockSettings settings;
-    private Material type = Material.AIR;
+    private XMaterial type = XMaterial.EMPTY;
     public BlockBuilder(String namespace, String id){
         this.key = new MinecraftKey(namespace, id);
     }
@@ -36,7 +37,7 @@ public class BlockBuilder implements XBlock.Builder {
     }
 
     @Override
-    public XBlock.Builder type(Material material){
+    public XBlock.Builder type(XMaterial material){
         this.type = material;
         return this;
     }
@@ -53,12 +54,12 @@ public class BlockBuilder implements XBlock.Builder {
         ResourceKey<Block> resourceKey = ResourceKey.a(IRegistry.W.f(), key);
         Block old = IRegistry.W.a(resourceKey);
         if(old != null){
-            return BlockContainer.of(old);
+            return BlockContainer.of(old, type);
         }
         Block block = ((BlockClass) handler).create((BlockSettings) settings);
-        init(block, type);
+        init(block, type.asBukkitMaterial());
         Bukkit.getLogger().info("Added Block [" + key + "]");
-        return BlockContainer.of(IRegistry.a(IRegistry.W, key, block));
+        return BlockContainer.of(IRegistry.a(IRegistry.W, key, block), type);
     }
 
     public static void init(Block block, Material type){

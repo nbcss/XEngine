@@ -1,8 +1,10 @@
 package io.github.nbcss.xengine.core.item;
 
+import io.github.nbcss.xengine.api.block.XBlock;
 import io.github.nbcss.xengine.api.item.XItem;
 import io.github.nbcss.xengine.api.item.XItemClass;
-import io.github.nbcss.xengine.api.item.XItemMaterial;
+import io.github.nbcss.xengine.api.XMaterial;
+import io.github.nbcss.xengine.core.item.type.BlockItemClass;
 import io.github.nbcss.xengine.core.item.type.ItemClass;
 import io.github.nbcss.xengine.api.item.XItemSettings;
 
@@ -24,10 +26,16 @@ public class ItemBuilder implements XItem.Builder, XItem.BlockItemBuilder {
             "ITEM_MATERIAL"), null);
     private final MinecraftKey key;
     private XItemSettings settings;
-    private XItemMaterial material;
+    private XMaterial material;
     private XItemClass handler = XItemClass.base();
-    public ItemBuilder(String namespace, String id){
+    private ItemBuilder(String namespace, String id){
         this.key = new MinecraftKey(namespace, id);
+    }
+
+    private ItemBuilder(XBlock block){
+        this.key = new MinecraftKey(block.getNamespace(), block.getId());
+        this.material = block.getType();
+        this.handler = BlockItemClass.of(block);
     }
 
     @Override
@@ -43,7 +51,7 @@ public class ItemBuilder implements XItem.Builder, XItem.BlockItemBuilder {
     }
 
     @Override
-    public XItem.Builder type(XItemMaterial type) {
+    public XItem.Builder type(XMaterial type) {
         this.material = type;
         return this;
     }
@@ -60,5 +68,13 @@ public class ItemBuilder implements XItem.Builder, XItem.BlockItemBuilder {
         MATERIAL_MAP.put(item, material.asBukkitMaterial());
         Bukkit.getLogger().info("Added Item [" + key + "]");
         return ItemContainer.of(IRegistry.a(IRegistry.Z, key, item), material);
+    }
+
+    public static ItemBuilder of(String namespace, String id){
+        return new ItemBuilder(namespace, id);
+    }
+
+    public static ItemBuilder of(XBlock block){
+        return new ItemBuilder(block);
     }
 }

@@ -1,5 +1,6 @@
 package io.github.nbcss.xengine.api.item;
 
+import io.github.nbcss.xengine.api.XMaterial;
 import io.github.nbcss.xengine.core.item.ItemContainer;
 import io.github.nbcss.xengine.core.item.ItemStackContainer;
 import io.github.nbcss.xengine.utils.Reflection;
@@ -35,7 +36,7 @@ public abstract class XItemStack extends org.bukkit.inventory.ItemStack {
         //no effect for setType()
     }
 
-    public XItemMaterial getMaterial(){
+    public XMaterial getMaterial(){
         return container.getType();
     }
 
@@ -51,11 +52,11 @@ public abstract class XItemStack extends org.bukkit.inventory.ItemStack {
         return null;
     }
 
-    public static XItemStack of(XItemMaterial material){
+    public static XItemStack of(XMaterial material){
         return of(material, 1);
     }
 
-    public static XItemStack of(XItemMaterial material, int count){
+    public static XItemStack of(XMaterial material, int count){
         ItemContainer container = ItemContainer.get(material);
         return container == null ? null : new ItemStackContainer(container, count);
     }

@@ -1,5 +1,6 @@
 package io.github.nbcss.xengine.api.block;
 
+import io.github.nbcss.xengine.api.XMaterial;
 import io.github.nbcss.xengine.core.block.BlockBuilder;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.world.level.IBlockAccess;
@@ -14,6 +15,7 @@ public interface XBlock {
     void replace(Block at, boolean applyPhysics);
     String getNamespace();
     String getId();
+    XMaterial getType();
 
     default void replace(Block at){
         replace(at, true);
@@ -29,7 +31,7 @@ public interface XBlock {
 
     interface Builder {
         Builder handler(XBlockClass type);
-        Builder type(Material material);
+        Builder type(XMaterial material);
         Builder info(XBlockSettings settings);
         XBlock register();
     }

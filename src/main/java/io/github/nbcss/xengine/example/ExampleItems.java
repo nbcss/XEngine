@@ -11,7 +11,6 @@ public class ExampleItems {
     static {
         GEM_ORE_ITEM = XItem.of(ExampleBlocks.GEM_ORE_BLOCK)
                 .info(XItemSettings.of().group(XItemGroup.BUILDING_BLOCKS))
-                .type(ExampleTypes.GEM_ORE)
                 .register();
         /*GEM = XItem.of("example", "gem")
                 .handler(XItemClass.base())

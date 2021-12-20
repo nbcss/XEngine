@@ -11,7 +11,7 @@ public class ExampleBlocks {
     public static final XBlock GEM_ORE_BLOCK;
     static {
         GEM_ORE_BLOCK = XBlock.of("example", "gem_ore")
-                .type(Material.STONE)
+                .type(ExampleTypes.GEM_ORE)
                 .handler(XBlockClass.base())
                 .info(XBlockSettings.of(XBlockMaterial.STONE).strength(1.0F, 6.0F))
                 .register();
