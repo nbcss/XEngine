@@ -25,7 +25,7 @@ public class BlockBuilder implements XBlock.Builder {
     private final MinecraftKey key;
     private XBlockClass handler = BaseBlockClass.INSTANCE;
     private XBlockSettings settings;
-    private XMaterial type = XMaterial.EMPTY;
+    private XMaterial type = null;
     public BlockBuilder(String namespace, String id){
         this.key = new MinecraftKey(namespace, id);
     }
@@ -50,7 +50,7 @@ public class BlockBuilder implements XBlock.Builder {
 
     @Override
     public XBlock register(){
-        assert settings != null && handler != null;
+        assert settings != null && handler != null && type != null;
         ResourceKey<Block> resourceKey = ResourceKey.a(IRegistry.W.f(), key);
         Block old = IRegistry.W.a(resourceKey);
         if(old != null){

@@ -16,6 +16,24 @@ public class ItemSettings implements XItemSettings {
     }
 
     @Override
+    public XItemSettings maxCount(int count) {
+        info.a(count);
+        return this;
+    }
+
+    @Override
+    public XItemSettings maxDamageIfAbsent(int maxDamage) {
+        info.b(maxDamage);
+        return this;
+    }
+
+    @Override
+    public XItemSettings maxDamage(int maxDamage) {
+        info.c(maxDamage);
+        return this;
+    }
+
+    @Override
     public ItemSettings group(XItemGroup group) {
         info.a(((ItemGroup) group).getTab());
         return this;
