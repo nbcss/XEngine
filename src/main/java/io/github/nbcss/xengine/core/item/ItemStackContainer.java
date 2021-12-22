@@ -1,6 +1,7 @@
 package io.github.nbcss.xengine.core.item;
 
 import io.github.nbcss.xengine.api.item.XItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemStackContainer extends XItemStack {
@@ -11,6 +12,14 @@ public class ItemStackContainer extends XItemStack {
 
     public ItemStackContainer(ItemContainer container, int count) {
         super(container, count);
+    }
+
+    public NBTTagCompound getOrCreateTag(){
+        return handle.getOrCreateTag();
+    }
+
+    public void setTag(NBTTagCompound tag){
+        handle.setTag(tag);
     }
 
     public net.minecraft.world.item.ItemStack getHandle(){

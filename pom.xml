@@ -85,7 +85,7 @@
             <artifactId>api</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/base-agent.jar</systemPath>
+            <systemPath>${project.basedir}/libs/BaseAgent-1.0-SNAPSHOT.jar</systemPath>
         </dependency>
         <!--<dependency>
             <groupId>asm</groupId>

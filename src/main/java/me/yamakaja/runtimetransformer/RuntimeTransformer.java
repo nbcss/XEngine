@@ -29,9 +29,9 @@ public class RuntimeTransformer {
         RuntimeTransformer.transformers.addAll(Arrays.asList(transformers));
     }
 
-    public static void attach(XEngine plugin){
+    public static void attach(XEngine plugin, boolean temp){
         try{
-            attachAgent(saveAgentJar(plugin), transformers.toArray(new Class<?>[0]));
+            attachAgent(saveAgentJar(plugin, temp), transformers.toArray(new Class<?>[0]));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -57,11 +57,16 @@ public class RuntimeTransformer {
         }
     }
 
-    private static File saveAgentJar(XEngine plugin) {
+    private static File saveAgentJar(XEngine plugin, boolean temp) {
         try (InputStream in = RuntimeTransformer.class.getResourceAsStream("/BaseAgent-1.0-SNAPSHOT.jar")) {
             assert in != null;
-            File agentFile = new File(plugin.getDataFolder(), "agent-temp.jar");
-            agentFile.mkdirs();
+            File agentFile;
+            if(temp){
+                agentFile = File.createTempFile("agent", ".jar");
+            }else{
+                agentFile = new File(plugin.getDataFolder(), "agent-temp.jar");
+                agentFile.mkdirs();
+            }
             //File.createTempFile("agent-temp", ".jar");
             agentFile.deleteOnExit();
             Files.copy(in, agentFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
