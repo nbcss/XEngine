@@ -1,8 +1,7 @@
 package io.github.nbcss.xengine.core.block;
 
 import io.github.nbcss.xengine.api.block.XBlockState;
-import net.minecraft.world.level.block.state.IBlockData;
-import org.bukkit.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.craftbukkit.v1_17_R1.block.CraftBlockState;
 
 public class BlockStateContainer implements XBlockState {
@@ -11,7 +10,7 @@ public class BlockStateContainer implements XBlockState {
         this.handle = handle;
     }
 
-    public BlockStateContainer(IBlockData handle){
+    public BlockStateContainer(BlockState handle){
         //this.handle = handle;
         this.handle = null;
         //fixme
@@ -20,11 +19,11 @@ public class BlockStateContainer implements XBlockState {
     }
 
     @Override
-    public BlockState asBlockState() {
+    public org.bukkit.block.BlockState asBlockState() {
         return handle;
     }
 
-    public IBlockData getState() {
+    public BlockState getState() {
         return handle.getHandle();
     }
 

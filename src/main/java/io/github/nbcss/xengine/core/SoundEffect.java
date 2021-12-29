@@ -1,15 +1,15 @@
 package io.github.nbcss.xengine.core;
 
 import io.github.nbcss.xengine.api.XSoundEffectGroup;
-import net.minecraft.world.level.block.SoundEffectType;
+import net.minecraft.world.level.block.SoundType;
 
 public class SoundEffect implements XSoundEffectGroup {
-    private final SoundEffectType handle;
-    public SoundEffect(SoundEffectType handle){
+    private final SoundType handle;
+    public SoundEffect(SoundType handle){
         this.handle = handle;
     }
 
-    public SoundEffectType getSound(){
+    public SoundType getSound(){
         return handle;
     }
 }

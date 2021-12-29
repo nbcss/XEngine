@@ -2,11 +2,10 @@ package io.github.nbcss.xengine.api.block;
 
 import io.github.nbcss.xengine.api.XMaterial;
 import io.github.nbcss.xengine.core.block.BlockBuilder;
-import net.minecraft.core.BlockPosition;
-import net.minecraft.world.level.IBlockAccess;
-import net.minecraft.world.level.block.state.IBlockData;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
@@ -16,6 +15,7 @@ public interface XBlock {
     String getNamespace();
     String getId();
     XMaterial getType();
+    net.minecraft.world.level.block.Block asBlock();
 
     default void replace(Block at){
         replace(at, true);
@@ -41,6 +41,6 @@ public interface XBlock {
     }
 
     interface StatePredicate {
-        boolean test(IBlockData iBlockData, IBlockAccess iBlockAccess, BlockPosition blockPosition);
+        boolean test(BlockState state, BlockGetter getter, BlockPos pos);
     }
 }

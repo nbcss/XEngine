@@ -4,12 +4,12 @@ import io.github.nbcss.xengine.api.block.XBlockClass;
 import io.github.nbcss.xengine.core.block.BlockSettings;
 import net.minecraft.world.level.block.Block;
 
-public class BaseBlockClass extends BlockClass {
+public class BaseBlockClass implements XBlockClass {
     public static final XBlockClass INSTANCE = new BaseBlockClass();
     private BaseBlockClass(){}
 
     @Override
     public Block create(BlockSettings settings){
-        return new Block(settings.getInfo());
+        return new Block(settings.asInfo());
     }
 }

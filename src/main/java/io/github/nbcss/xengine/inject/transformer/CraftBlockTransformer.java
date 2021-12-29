@@ -5,20 +5,19 @@ import me.yamakaja.runtimetransformer.annotation.Inject;
 import me.yamakaja.runtimetransformer.annotation.InjectionType;
 import me.yamakaja.runtimetransformer.annotation.TransformByCraft;
 import me.yamakaja.runtimetransformer.comm.Message;
-import net.minecraft.core.BlockPosition;
-import net.minecraft.world.level.block.entity.TileEntity;
-import net.minecraft.world.level.block.state.IBlockData;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.World;
-//import org.bukkit.craftbukkit.v1_17_R1.block.CraftBlockState;
 
 @TransformByCraft("block.CraftBlockStates")
 public class CraftBlockTransformer {
 
     @Inject(InjectionType.INSERT)
     private static Object getBlockState(World world,
-                                        BlockPosition blockPosition,
-                                        IBlockData blockData,
-                                        TileEntity tileEntity) {
+                                        BlockPos blockPosition,
+                                        BlockState blockData,
+                                        BlockEntity tileEntity) {
         Message message = new Message("getBlockState",
                 world, blockPosition, blockData, tileEntity, null);
         Agent.getInstance().getHandler().handle(message);

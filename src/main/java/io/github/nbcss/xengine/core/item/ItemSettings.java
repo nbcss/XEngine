@@ -5,41 +5,42 @@ import io.github.nbcss.xengine.api.item.XItemSettings;
 import net.minecraft.world.item.Item;
 
 public class ItemSettings implements XItemSettings {
-    private final Item.Info info;
+    private final Item.Properties info;
 
-    public ItemSettings(Item.Info info) {
+    public ItemSettings(Item.Properties info) {
         this.info = info;
     }
 
-    public Item.Info getInfo() {
+    @Override
+    public Item.Properties asInfo() {
         return info;
     }
 
     @Override
     public XItemSettings maxCount(int count) {
-        info.a(count);
+        info.stacksTo(count);
         return this;
     }
 
     @Override
     public XItemSettings maxDamageIfAbsent(int maxDamage) {
-        info.b(maxDamage);
+        info.defaultDurability(maxDamage);
         return this;
     }
 
     @Override
     public XItemSettings maxDamage(int maxDamage) {
-        info.c(maxDamage);
+        info.durability(maxDamage);
         return this;
     }
 
     @Override
     public ItemSettings group(XItemGroup group) {
-        info.a(((ItemGroup) group).getTab());
+        info.tab(((ItemGroup) group).getTab());
         return this;
     }
 
     public static ItemSettings of(){
-        return new ItemSettings(new Item.Info());
+        return new ItemSettings(new Item.Properties());
     }
 }

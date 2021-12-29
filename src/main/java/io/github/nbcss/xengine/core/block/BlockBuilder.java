@@ -3,15 +3,15 @@ package io.github.nbcss.xengine.core.block;
 import io.github.nbcss.xengine.api.XMaterial;
 import io.github.nbcss.xengine.api.block.XBlock;
 import io.github.nbcss.xengine.api.block.XBlockClass;
+import io.github.nbcss.xengine.api.block.XBlockMaterial;
 import io.github.nbcss.xengine.api.block.XBlockSettings;
-import io.github.nbcss.xengine.core.block.type.BlockClass;
 import io.github.nbcss.xengine.core.block.type.BaseBlockClass;
 import io.github.nbcss.xengine.utils.Reflection;
-import net.minecraft.core.IRegistry;
-import net.minecraft.resources.MinecraftKey;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.IBlockData;
+import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
@@ -19,15 +19,18 @@ import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class BlockBuilder implements XBlock.Builder {
-    private static final Map<Block, Material> MATERIAL_MAP = (Map<Block, Material>) Reflection.get(
+    private static final Map<Block, Material> BLOCK_MATERIAL = (Map<Block, Material>) Reflection.get(
             Reflection.bukkitField("util", "CraftMagicNumbers", "BLOCK_MATERIAL"),
             null);
-    private final MinecraftKey key;
+    private static final Map<Material, Block> MATERIAL_BLOCK = (Map<Material, Block>) Reflection.get(
+            Reflection.bukkitField("util", "CraftMagicNumbers", "MATERIAL_BLOCK"),
+            null);
+    private final ResourceLocation key;
     private XBlockClass handler = BaseBlockClass.INSTANCE;
-    private XBlockSettings settings;
+    private XBlockSettings settings = XBlockSettings.of(XBlockMaterial.AIR);
     private XMaterial type = null;
     public BlockBuilder(String namespace, String id){
-        this.key = new MinecraftKey(namespace, id);
+        this.key = new ResourceLocation(namespace, id);
     }
 
     @Override
@@ -51,22 +54,25 @@ public class BlockBuilder implements XBlock.Builder {
     @Override
     public XBlock register(){
         assert settings != null && handler != null && type != null;
-        ResourceKey<Block> resourceKey = ResourceKey.a(IRegistry.W.f(), key);
-        Block old = IRegistry.W.a(resourceKey);
+        ResourceKey<Block> resourceKey = ResourceKey.create(Registry.BLOCK.key(), key);
+        Block old = Registry.BLOCK.get(resourceKey);
         if(old != null){
             return BlockContainer.of(old, type);
         }
-        Block block = ((BlockClass) handler).create((BlockSettings) settings);
-        init(block, type.asBukkitMaterial());
-        Bukkit.getLogger().info("Added Block [" + key + "]");
-        return BlockContainer.of(IRegistry.a(IRegistry.W, key, block), type);
+        Block block = handler.create((BlockSettings) settings);
+        init(block, type);
+        Bukkit.getLogger().info("[XEngine] +Block [" + key + "]");
+        return BlockContainer.of(Registry.register(Registry.BLOCK, key, block), type);
     }
 
-    public static void init(Block block, Material type){
-        MATERIAL_MAP.put(block, type);
-        for (IBlockData state : block.getStates().a()) {
-            state.a();
-            Block.p.b(state);
+    private static void init(Block block, XMaterial type){
+        BLOCK_MATERIAL.put(block, type.asBukkitMaterial());
+        if(!type.isVanilla()){
+            MATERIAL_BLOCK.put(type.asBukkitMaterial(), block);
+        }
+        for (BlockState state : block.getStateDefinition().getPossibleStates()) {
+            state.initCache();
+            Block.BLOCK_STATE_REGISTRY.add(state);
         }
     }
 }

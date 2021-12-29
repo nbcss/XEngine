@@ -3,82 +3,82 @@ package io.github.nbcss.xengine.network;
 import com.google.common.collect.Sets;
 import io.github.nbcss.xengine.utils.Reflection;
 import io.netty.buffer.Unpooled;
-import net.minecraft.core.IRegistry;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.PacketDataSerializer;
+import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.PacketPlayOutCustomPayload;
-import net.minecraft.resources.MinecraftKey;
-import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
 import java.util.Set;
 
 public class RegistrySyncSystem {
-    private static final MinecraftKey ID = new MinecraftKey("fabric", "registry/sync");
+    private static final ResourceLocation ID = new ResourceLocation("fabric", "registry/sync");
     private static final Method GET_HANDLE = Reflection.bukkitMethod(
             "entity", "CraftPlayer", "getHandle");
     private static final Set<String> SYNC_TYPES = Sets.newHashSet(
             "minecraft:block",
             "minecraft:block_entity_type",
             "minecraft:item");
-    private static NBTTagCompound cache = null;
+    private static CompoundTag cache = null;
 
     public static void sync(Player player){
         Packet<?> packet = getPacket();
         if(packet != null){
-            ((EntityPlayer) Reflection.invoke(GET_HANDLE, player)).b.sendPacket(packet);
+            ((ServerPlayer) Reflection.invoke(GET_HANDLE, player)).connection.send(packet);
         }
     }
 
     public static Packet<?> getPacket(){
-        NBTTagCompound tag = toTag();
+        CompoundTag tag = toTag();
         if (tag == null) {
             return null;
         }
 
-        PacketDataSerializer buf = new PacketDataSerializer(Unpooled.buffer());
-        buf.a(tag);
+        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+        buf.writeNbt(tag);
 
-        return new PacketPlayOutCustomPayload(ID, buf);
+        return new ClientboundCustomPayloadPacket(ID, buf);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> NBTTagCompound toTag() {
+    public static <T> CompoundTag toTag() {
         if(cache != null)
             return cache;
-        NBTTagCompound mainTag = new NBTTagCompound();
+        CompoundTag mainTag = new CompoundTag();
 
-        for (MinecraftKey registryId : IRegistry.f.keySet()) {
-            IRegistry<T> registry = (IRegistry<T>) IRegistry.f.get(registryId);
+        for (ResourceLocation registryId : Registry.REGISTRY.keySet()) {
+            Registry<T> registry = (Registry<T>) Registry.REGISTRY.get(registryId);
             assert registry != null;
 
             if(!SYNC_TYPES.contains(registryId.toString())){
                 continue;
             }
 
-            NBTTagCompound registryTag = new NBTTagCompound();
+            CompoundTag registryTag = new CompoundTag();
 
             for (T o : registry) {
-                MinecraftKey id = registry.getKey(o);
+                ResourceLocation id = registry.getKey(o);
                 if (id == null)
                     continue;
                 int rawId = registry.getId(o);
 
-                registryTag.setInt(id.toString(), rawId);
+                registryTag.putInt(id.toString(), rawId);
             }
 
-            mainTag.set(registryId.toString(), registryTag);
+            mainTag.put(registryId.toString(), registryTag);
         }
 
-        if (mainTag.getKeys().isEmpty()) {
+        if (mainTag.getAllKeys().isEmpty()) {
             return null;
         }
 
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInt("version", 1);
-        tag.set("registries", mainTag);
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("version", 1);
+        tag.put("registries", mainTag);
         cache = tag;
         return tag;
     }

@@ -4,7 +4,7 @@ import io.github.nbcss.xengine.api.XMaterial;
 import io.github.nbcss.xengine.core.item.ItemContainer;
 import io.github.nbcss.xengine.core.item.ItemStackContainer;
 import io.github.nbcss.xengine.utils.Reflection;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
@@ -21,9 +21,9 @@ public abstract class XItemStack extends org.bukkit.inventory.ItemStack {
     private static final Class<?> CRAFT_META_CLASS = Reflection.bukkitClass(
             "inventory", "CraftMetaItem");
     private static final Constructor<?> CREATE_META = Reflection.constructor(CRAFT_META_CLASS, CRAFT_META_CLASS);
-    private static final Constructor<?> READ_META = Reflection.constructor(CRAFT_META_CLASS, NBTTagCompound.class);
+    private static final Constructor<?> READ_META = Reflection.constructor(CRAFT_META_CLASS, CompoundTag.class);
     private static final Method APPLY_TAG = Reflection.method(CRAFT_META_CLASS,
-            "applyToItem", NBTTagCompound.class);
+            "applyToItem", CompoundTag.class);
     private static final Field CRAFT_HANDLE_FIELD = Reflection.field(CRAFT_ITEM_CLASS, "handle");
     protected ItemStack handle;
     protected ItemContainer container;
@@ -80,11 +80,11 @@ public abstract class XItemStack extends org.bukkit.inventory.ItemStack {
         if (itemMeta == null) {
             handle.setTag(null);
         }else{
-            NBTTagCompound tag = new NBTTagCompound();
+            CompoundTag tag = new CompoundTag();
             handle.setTag(tag);
             Reflection.invoke(APPLY_TAG, itemMeta, tag);
-            if (handle.getItem().usesDurability()) {
-                handle.setDamage(handle.getDamage());
+            if (handle.getItem().canBeDepleted()) {
+                handle.setDamageValue(handle.getDamageValue());
             }
         }
         return true;

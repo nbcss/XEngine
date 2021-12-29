@@ -1,16 +1,16 @@
 package io.github.nbcss.xengine.core;
 
 import io.github.nbcss.xengine.api.XMapColor;
-import net.minecraft.world.level.material.MaterialMapColor;
+import net.minecraft.world.level.material.MaterialColor;
 
 public class MapColor implements XMapColor {
-    private final MaterialMapColor handle;
+    private final MaterialColor handle;
 
-    public MapColor(MaterialMapColor handle) {
+    public MapColor(MaterialColor handle) {
         this.handle = handle;
     }
 
-    public MaterialMapColor getColor() {
+    public MaterialColor getColor() {
         return handle;
     }
 }

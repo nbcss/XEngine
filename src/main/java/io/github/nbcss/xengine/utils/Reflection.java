@@ -93,6 +93,14 @@ public class Reflection {
         }
     }
 
+    public static void set(Field field, Object target, Object value){
+        try{
+            field.set(target, value);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
     public static Object invoke(Method method, Object target, Object... args){
         try{
             return method.invoke(target, args);

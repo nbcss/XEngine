@@ -3,6 +3,7 @@ package io.github.nbcss.xengine.api.block;
 import io.github.nbcss.xengine.api.XMapColor;
 import io.github.nbcss.xengine.api.XSoundEffectGroup;
 import io.github.nbcss.xengine.core.block.BlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.function.ToIntFunction;
 
@@ -31,6 +32,7 @@ public interface XBlockSettings {
     BlockSettings mapColor(XMapColor color);
     XBlockSettings hardness(float hardness);
     XBlockSettings resistance(float resistance);
+    BlockBehaviour.Properties asInfo();
 
     static XBlockSettings of(XBlockMaterial material){
         return BlockSettings.of(material);
