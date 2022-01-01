@@ -1,5 +1,6 @@
 package io.github.nbcss.xengine.core.item;
 
+import io.github.nbcss.xengine.api.XRegistry;
 import io.github.nbcss.xengine.api.block.XBlock;
 import io.github.nbcss.xengine.api.item.XItem;
 import io.github.nbcss.xengine.api.item.XItemClass;
@@ -8,8 +9,6 @@ import io.github.nbcss.xengine.core.item.type.BlockItemClass;
 import io.github.nbcss.xengine.api.item.XItemSettings;
 
 import io.github.nbcss.xengine.utils.Reflection;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import org.bukkit.Bukkit;
@@ -59,8 +58,7 @@ public class ItemBuilder implements XItem.Builder, XItem.BlockItemBuilder {
     @Override
     public XItem register(){
         assert settings != null && handler != null && material != null;
-        ResourceKey<Item> resourceKey = ResourceKey.create(Registry.ITEM.key(), key);
-        Item old = Registry.ITEM.get(resourceKey);
+        Item old = XRegistry.ITEM.get(key);
         if(old != null){
             return ItemContainer.of(old, material);
         }
@@ -70,7 +68,7 @@ public class ItemBuilder implements XItem.Builder, XItem.BlockItemBuilder {
             MATERIAL_ITEM.put(material.asBukkitMaterial(), item);
         }
         Bukkit.getLogger().info("[XEngine] +Item [" + key + "]");
-        return ItemContainer.of(Registry.register(Registry.ITEM, key, item), material);
+        return ItemContainer.of(XRegistry.ITEM.register(key, item), material);
     }
 
     public static ItemBuilder of(String namespace, String id){

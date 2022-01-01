@@ -48,10 +48,10 @@ public final class XEngine extends JavaPlugin implements Listener {
             Class.forName("io.github.nbcss.xengine.example.ExampleBlocks");
             Class.forName("io.github.nbcss.xengine.example.ExampleItems");
         }catch (Throwable e){
+            getLogger().warning("[FATAL ERROR] " +
+                    "XEngine cannot load and will shutdown the server to prevent data corrupt");
             e.printStackTrace();
-            Bukkit.getLogger().warning("[FATAL ERROR] " +
-                    "XEngine cannot load and will shutdown the server to protect data");
-            Bukkit.shutdown();
+            System.exit(1);
         }
     }
 
@@ -64,10 +64,10 @@ public final class XEngine extends JavaPlugin implements Listener {
             RuntimeTransformer.attach(this, temp);
             getServer().getPluginManager().registerEvents(this, this);
         }catch (Throwable e){
+            getLogger().warning("[FATAL ERROR] " +
+                    "XEngine cannot start and will shutdown the server to prevent data corrupt");
             e.printStackTrace();
-            Bukkit.getLogger().warning("[FATAL ERROR] " +
-                    "XEngine cannot start and will shutdown the server to protect data");
-            Bukkit.shutdown();
+            System.exit(1);
         }
     }
 

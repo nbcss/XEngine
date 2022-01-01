@@ -1,15 +1,14 @@
 package io.github.nbcss.xengine.core.block;
 
 import io.github.nbcss.xengine.api.XMaterial;
+import io.github.nbcss.xengine.api.XRegistry;
 import io.github.nbcss.xengine.api.block.XBlock;
 import io.github.nbcss.xengine.api.block.XBlockClass;
 import io.github.nbcss.xengine.api.block.XBlockMaterial;
 import io.github.nbcss.xengine.api.block.XBlockSettings;
 import io.github.nbcss.xengine.core.block.type.BaseBlockClass;
 import io.github.nbcss.xengine.utils.Reflection;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.Bukkit;
@@ -54,15 +53,14 @@ public class BlockBuilder implements XBlock.Builder {
     @Override
     public XBlock register(){
         assert settings != null && handler != null && type != null;
-        ResourceKey<Block> resourceKey = ResourceKey.create(Registry.BLOCK.key(), key);
-        Block old = Registry.BLOCK.get(resourceKey);
+        Block old = XRegistry.BLOCK.get(key);
         if(old != null){
             return BlockContainer.of(old, type);
         }
         Block block = handler.create((BlockSettings) settings);
         init(block, type);
         Bukkit.getLogger().info("[XEngine] +Block [" + key + "]");
-        return BlockContainer.of(Registry.register(Registry.BLOCK, key, block), type);
+        return BlockContainer.of(XRegistry.BLOCK.register(key, block), type);
     }
 
     private static void init(Block block, XMaterial type){

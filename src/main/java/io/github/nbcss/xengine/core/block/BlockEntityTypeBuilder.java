@@ -2,14 +2,13 @@ package io.github.nbcss.xengine.core.block;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.types.Type;
+import io.github.nbcss.xengine.api.XRegistry;
 import io.github.nbcss.xengine.api.block.XBlock;
 import io.github.nbcss.xengine.api.block.XBlockEntity;
 import io.github.nbcss.xengine.api.block.XBlockEntityType;
 import io.github.nbcss.xengine.utils.Reflection;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -83,13 +82,12 @@ public class BlockEntityTypeBuilder<T extends BlockEntity, U extends XBlockEntit
     @Override
     public XBlockEntityType<T, U> register() {
         assert key != null;
-        ResourceKey<BlockEntityType<?>> resourceKey = ResourceKey.create(Registry.BLOCK_ENTITY_TYPE.key(), key);
-        BlockEntityType<T> old = (BlockEntityType<T>) Registry.BLOCK_ENTITY_TYPE.get(resourceKey);
+        BlockEntityType<T> old = (BlockEntityType<T>) XRegistry.BLOCK_ENTITY_TYPE.get(key);
         if(old != null){
             return BlockEntityTypeContainer.of(old);
         }
         BlockEntityType<?> types = build();
-        BlockEntityType<T> current = (BlockEntityType<T>) Registry.register(Registry.BLOCK_ENTITY_TYPE, key, types);
+        BlockEntityType<T> current = (BlockEntityType<T>) XRegistry.BLOCK_ENTITY_TYPE.register(key, types);
         return BlockEntityTypeContainer.of(current);
     }
 
