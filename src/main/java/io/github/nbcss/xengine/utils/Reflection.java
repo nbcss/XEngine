@@ -8,6 +8,15 @@ import java.lang.reflect.Method;
 
 public class Reflection {
 
+    public static <T> T handle(Class<T> cast,
+                               Object craft){
+        try{
+            return cast.cast(method(craft.getClass(), "getHandle").invoke(craft));
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
     public static Field field(Class<?> target,
                               String fieldName){
         try{
