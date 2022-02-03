@@ -1,6 +1,5 @@
 package io.github.nbcss.xengine.example;
 
-import io.github.nbcss.xengine.api.item.XItemClass;
 import io.github.nbcss.xengine.api.item.XItemGroup;
 import io.github.nbcss.xengine.api.item.XItem;
 import io.github.nbcss.xengine.api.item.XItemSettings;

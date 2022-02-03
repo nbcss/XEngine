@@ -4,8 +4,6 @@ import io.github.nbcss.xengine.api.block.XBlock;
 import io.github.nbcss.xengine.api.block.XBlockClass;
 import io.github.nbcss.xengine.api.block.XBlockMaterial;
 import io.github.nbcss.xengine.api.block.XBlockSettings;
-import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftInventory;
 
 public class ExampleBlocks {
     public static final XBlock GEM_ORE_BLOCK;

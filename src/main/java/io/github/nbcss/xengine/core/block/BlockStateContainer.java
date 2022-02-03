@@ -1,33 +1,22 @@
 package io.github.nbcss.xengine.core.block;
 
 import io.github.nbcss.xengine.api.block.XBlockState;
+import io.github.nbcss.xengine.utils.Reflection;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
-import org.bukkit.craftbukkit.v1_17_R1.block.CraftBlockState;
+
+import java.lang.reflect.Method;
 
 public class BlockStateContainer implements XBlockState {
-    protected final CraftBlockState handle;
-    public BlockStateContainer(CraftBlockState handle){
-        this.handle = handle;
-    }
-
-    public BlockStateContainer(BlockState handle){
-        //this.handle = handle;
-        this.handle = null;
-        //fixme
-        //CraftBlockStates
-
+    private static final Method GET_STATE = Reflection.bukkitMethod("block",
+            "CraftBlockStates", "getBlockState", BlockState.class, CompoundTag.class);
+    private final BlockState handle;
+    public BlockStateContainer(BlockState state){
+        this.handle = state;
     }
 
     @Override
     public org.bukkit.block.BlockState asBlockState() {
-        return handle;
-    }
-
-    public BlockState getState() {
-        return handle.getHandle();
-    }
-
-    public static BlockStateContainer fromCraft(Object craftBlockState){
-        return null;
+        return (org.bukkit.block.BlockState) Reflection.invoke(GET_STATE, null, handle, null);
     }
 }
