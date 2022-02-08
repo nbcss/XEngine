@@ -7,7 +7,7 @@ import io.github.nbcss.xengine.inject.transformer.CraftItemTransformer;
 import io.github.nbcss.xengine.inject.transformer.MaterialTransformer;
 import io.github.nbcss.xengine.network.RegistrySyncSystem;
 import me.yamakaja.runtimetransformer.RuntimeTransformer;
-import org.bukkit.Bukkit;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

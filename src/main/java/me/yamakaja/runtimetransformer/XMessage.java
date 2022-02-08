@@ -1,22 +1,20 @@
 package me.yamakaja.runtimetransformer;
 
-import me.yamakaja.runtimetransformer.comm.Message;
+public record XMessage(String channel, Object... values) {
 
-public class XMessage {
-    //private final Object[] values;
-    private final Message message;
-
-    public XMessage(Message message){
-        //this.values = values;
-        this.message = message;
+    public Object getValue(int i) {
+        return values[i];
     }
 
-    public Object getValue(int i){
-        return message.getValue(i);
+    public void setValue(int i, Object value) {
+        this.values[i] = value;
     }
 
-    public void setValue(int i, Object value){
-        //this.values[i] = value;
-        message.setValue(i, value);
+    public int size() {
+        return values.length;
+    }
+
+    public void dispatch(){
+        throw new RuntimeException("Only available in VM environment");
     }
 }

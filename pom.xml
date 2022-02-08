@@ -122,13 +122,6 @@
             <classifier>remapped-mojang</classifier>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>me.yamakaja.runtimetransformer</groupId>
-            <artifactId>api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/BaseAgent-1.0-SNAPSHOT.jar</systemPath>
-        </dependency>
     </dependencies>
 
 </project>

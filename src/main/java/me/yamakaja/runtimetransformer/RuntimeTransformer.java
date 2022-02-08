@@ -1,17 +1,19 @@
 package me.yamakaja.runtimetransformer;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.sun.tools.attach.VirtualMachine;
 import io.github.nbcss.xengine.XEngine;
-import me.yamakaja.runtimetransformer.agent.Agent;
+import io.github.nbcss.xengine.utils.Reflection;
+import me.yamakaja.runtimetransformer.service.AgentPack;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import java.io.*;
+import java.lang.management.ManagementFactory;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Yamakaja on 19.05.17.
@@ -39,21 +41,18 @@ public class RuntimeTransformer {
 
     private static void attachAgent(File agentFile, Class<?>[] transformers) {
         try {
+            String key = "Minecraft:XEngine=Transformer";
+            MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+            ObjectName name = new ObjectName(key);
+            AgentPack pack = new AgentPack(processors, transformers);
+            server.registerMBean(pack, name);
+
             String pid = String.valueOf(ProcessHandle.current().pid());
             VirtualMachine vm = VirtualMachine.attach(pid);
-            vm.loadAgent(agentFile.getAbsolutePath());
+            vm.loadAgent(agentFile.getAbsolutePath(), key + " " + Reflection.bukkitVersion());
             vm.detach();
-            final Map<String, XMessageProcessor> handlers = Maps.newHashMap();
-            for (XMessageProcessor processor : RuntimeTransformer.processors) {
-                handlers.put(processor.getChannel(), processor);
-            }
-            Agent.getInstance().process(message -> {
-                XMessageProcessor processor = handlers.get(message.getChannel());
-                if(processor != null)
-                    processor.handle(new XMessage(message));
-            }, transformers);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

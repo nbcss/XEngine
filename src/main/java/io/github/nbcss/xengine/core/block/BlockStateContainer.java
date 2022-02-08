@@ -15,6 +15,10 @@ public class BlockStateContainer implements XBlockState {
         this.handle = state;
     }
 
+    public BlockState getHandle() {
+        return handle;
+    }
+
     @Override
     public org.bukkit.block.BlockState asBlockState() {
         return (org.bukkit.block.BlockState) Reflection.invoke(GET_STATE, null, handle, null);

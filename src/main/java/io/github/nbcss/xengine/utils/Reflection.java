@@ -58,11 +58,15 @@ public class Reflection {
         }
     }
 
+    public static String bukkitVersion(){
+        return Bukkit.getServer().getClass().getPackage().getName()
+                .replace(".", ",").split(",")[3];
+    }
+
     public static Class<?> bukkitClass(String packageName,
                                        String className){
         try{
-            String version = Bukkit.getServer().getClass().getPackage().getName()
-                    .replace(".", ",").split(",")[3] + ".";
+            String version = bukkitVersion() + ".";
             StringBuilder name = new StringBuilder("org.bukkit.craftbukkit.");
             name.append(version);
             if(packageName != null)

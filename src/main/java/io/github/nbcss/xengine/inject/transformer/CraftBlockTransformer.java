@@ -1,14 +1,16 @@
 package io.github.nbcss.xengine.inject.transformer;
 
-import me.yamakaja.runtimetransformer.agent.Agent;
 import me.yamakaja.runtimetransformer.annotation.Inject;
 import me.yamakaja.runtimetransformer.annotation.InjectionType;
 import me.yamakaja.runtimetransformer.annotation.TransformByCraft;
-import me.yamakaja.runtimetransformer.comm.Message;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.World;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
 
 @TransformByCraft("block.CraftBlockStates")
 public class CraftBlockTransformer {
@@ -18,10 +20,18 @@ public class CraftBlockTransformer {
                                         BlockPos blockPosition,
                                         BlockState blockData,
                                         BlockEntity tileEntity) {
-        Message message = new Message("getBlockState",
-                world, blockPosition, blockData, tileEntity, null);
-        Agent.getInstance().getHandler().handle(message);
-        Object result = message.getValue(4);
+        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+        String[] signature = {"java.lang.String", "[Ljava.lang.Object;"};
+        String name = "Minecraft:XEngine=Transformer", channel = "getBlockState";
+        Object[] values = {world, blockPosition, blockData, tileEntity, null};
+        try{
+            ObjectName objectName = new ObjectName(name);
+            Object[] parameters = {channel, values};
+            server.invoke(objectName, "dispatch", parameters, signature);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        Object result = values[4];
         if(result != null) {
             return result;
         }
